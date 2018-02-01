@@ -1,0 +1,10 @@
+{
+  "name": "greatbigthink/lib-db",
+  "description": "Database libraries for the GBT Framework",
+  "license": "MIT",
+  "autoload": {
+    "psr-4":{
+      "framework\\db\\": "src/"
+    }
+  }
+}
