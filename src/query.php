@@ -4,6 +4,7 @@ use framework\db\connection as connection;
 
 class query
 {
+	public $table = false;
 	public $db = false;
 	protected $connection = 'default';
 	protected $last_statement = false;
@@ -17,6 +18,10 @@ class query
 			$this->connection = $connection;
 		}
 	}
+
+	#======================================================================
+	# Returns after the query
+	#======================================================================
 
 	public function insert_id()
 	{
@@ -69,17 +74,17 @@ class query
 		return $this->$query( $sql, $params );
 	}
 
-	public function read_ordered( $column = 'id', $direction = 'asc' )
-	{
-		return  $this->select( "select * from `{$this->table}` order by `$column` $direction" );
-	}
-
 	#======================================================================
 	# Interfaces
 	#======================================================================
 
 	public function select( $request, $query_params = [] )
 	{
+		if( !$this->table )
+		{
+			return false;
+		}
+
 		if( is_array($request) )
 		{
 			$template = reset($request);
@@ -122,12 +127,22 @@ class query
 
 	public function select_row( $request, $query_params = [] )
 	{
+		if( !$this->table )
+		{
+			return false;
+		}
+
 		$result = $this->select( $request, $query_params );
 		return reset( $result );
 	}
 
 	public function select_one( $request, $query_params = [] )
 	{
+		if( !$this->table )
+		{
+			return false;
+		}
+
 		$result = $this->select_row( $request, $query_params );
 		return reset( $result );
 	}
@@ -136,6 +151,11 @@ class query
 
 	public function update( $id = false, $inputs = [] )
 	{
+		if( !$this->table )
+		{
+			return false;
+		}
+
 		if( is_numeric($id) )
 		{
 			$update_inputs = [];
@@ -156,6 +176,11 @@ class query
 
 	public function delete( $id )
 	{
+		if( !$this->table )
+		{
+			return false;
+		}
+
 		if( is_numeric( $id ) )
 		{
 			return $this->execute( "DELETE FROM `{$this->table}` WHERE `id` = :id" , [ ':id' => $id ] );
@@ -197,16 +222,22 @@ class query
 	{
 		$this->db = $this->connect();
 
-		try {
+		try
+		{
 			$statement = $this->db->prepare( $template );
-		} catch (PDOException $e) {
+		}
+		catch (PDOException $e)
+		{
 			debug($e->getMessage());
 			exit;
 		}
 
-		try {
+		try
+		{
 			$statement->execute( $query_params );
-		} catch (PDOException $e) {
+		}
+		catch (PDOException $e)
+		{
 			debug($e->getMessage());
 			exit;
 		}

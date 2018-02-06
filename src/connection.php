@@ -15,7 +15,7 @@ define("DEFAULT_CONNECTION", 'default');
 #		'name' => 'default_database',
 #		'user' => 'default_user',
 #		'pass' => 'default_password',
-#		'addr' => 'localhost'
+#		'addr' => 'localhost',
 #		'charset' => 'utf8mb4'
 #	]);
 #
@@ -63,7 +63,7 @@ class connection
 	{
 		self::$defined_connections[$connection_name] = self::initialize( $connection_info );
 
-		if( $connection_name == DEFAULT_connection )
+		if( $connection_name == DEFAULT_CONNECTION )
 		{
 			self::$defined_connections['default'] = self::initialize( $connection_info );
 		}
