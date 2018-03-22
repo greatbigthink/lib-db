@@ -15,7 +15,7 @@ define("DEFAULT_CONNECTION", 'default');
 #		'name' => 'default_database',
 #		'user' => 'default_user',
 #		'pass' => 'default_password',
-#		'addr' => 'localhost',
+#		'addr' => 'localhost'
 #		'charset' => 'utf8mb4'
 #	]);
 #
